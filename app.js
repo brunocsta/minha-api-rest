@@ -1,8 +1,9 @@
-import express, { json } from "express";
+import express from "express";
+import homeRoutes from "./src/routes/homeRoutes";
 
 class App {
   constructor() {
-    this.app = express;
+    this.app = express();
     this.middlewares();
     this.routes();
   }
@@ -12,7 +13,9 @@ class App {
     this.app.use(express.json());
   }
 
-  routes() {}
+  routes() {
+    this.app.use("/", homeRoutes);
+  }
 }
 
 //exporta a classe já instanciada, neste caso exporta o express (que é o app)
