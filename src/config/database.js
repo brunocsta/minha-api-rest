@@ -1,19 +1,14 @@
 require("dotenv").config();
 
-// Para Windows, às vezes localhost não resolve
-const host = process.env.DB_HOST || "127.0.0.1";
-const port = process.env.DB_PORT || 5432;
-const username = process.env.DB_USER || "api_user";
-const password = process.env.DB_PASS || "bmartins";
-const database = process.env.DB_NAME || "api_rest_dev";
+// Para Windows, às vezes localhost não resolvenpm run dev
 
 module.exports = {
   dialect: "postgres",
-  host,
-  port,
-  username,
-  password,
-  database,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 
   define: {
     timestamps: true,
