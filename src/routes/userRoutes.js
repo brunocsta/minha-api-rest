@@ -5,7 +5,7 @@ import loginRequired from "../middlewares/loginRequired";
 const router = Router();
 
 //ilustrativas - não são rotas usadas numa aplicação real
-router.get("/", loginRequired, userController.index);
+//router.get("/", loginRequired, userController.index);
 //router.get("/:id", userController.show);
 
 //rotas reais (seguras)
