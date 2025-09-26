@@ -4,8 +4,9 @@ import User from "../models/User";
 class UserController {
   async store(req, res) {
     try {
-      const novoUser = await User.create(req.body);
-      return res.json(novoUser);
+      const newUser = await User.create(req.body);
+      const { id, nome, email } = newUser;
+      return res.json({ id, nome, email });
     } catch (e) {
       return res.status(400).json({
         //tirando a mensagem do objeto de erro gerado
@@ -46,9 +47,11 @@ class UserController {
         });
       }
 
-      const novosDados = await user.update(req.body);
-      return res.json(novosDados);
+      const newData = await user.update(req.body);
+      const { id, nome, email } = newData;
+      return res.json({ id, nome, email });
     } catch (e) {
+      console.log(e);
       return res.json(null);
     }
   }
@@ -56,20 +59,14 @@ class UserController {
   //Delete
   async delete(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ["Missing ID value."],
-        });
-      }
-
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
 
       if (!user) {
         return res.status(400).json({
           errors: ["Usuário não encontrado."],
         });
       }
-      await user.destroy(user);
+      await user.destroy(null);
 
       return res.json(user);
     } catch (e) {
