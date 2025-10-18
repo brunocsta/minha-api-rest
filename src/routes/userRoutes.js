@@ -9,7 +9,7 @@ const router = Router();
 //router.get("/:id", userController.show);
 
 //rotas reais (seguras)
-router.post("/", userController.store);
+router.post("/", loginRequired, userController.store);
 router.put("/", loginRequired, userController.update);
 router.delete("/", loginRequired, userController.delete);
 
