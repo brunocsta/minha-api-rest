@@ -23,7 +23,7 @@ async function startServer() {
     console.log("PostgreSQL conectado com sucesso.");
 
     //Sincroniza os models ambiente dev
-    if ((process.env.NODE_ENV = "development")) {
+    if (process.env.NODE_ENV == "development") {
       console.log("Sincronizando models...");
       await connection.sync();
       console.log("Models sincronizados");
