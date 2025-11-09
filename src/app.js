@@ -2,18 +2,18 @@ const dotenv = require("dotenv");
 const { resolve } = require("path");
 dotenv.config();
 
-require("./src/database");
+require("./database");
 
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-const homeRoutes = require("./src/routes/homeRoutes");
-const userRoutes = require("./src/routes/userRoutes");
-const tokenRoutes = require("./src/routes/tokenRoutes");
-const alunoRoutes = require("./src/routes/alunoRoutes");
-const fotoRoutes = require("./src/routes/fotoRoutes");
+const homeRoutes = require("./routes/homeRoutes");
+const userRoutes = require("./routes/userRoutes");
+const tokenRoutes = require("./routes/tokenRoutes");
+const alunoRoutes = require("./routes/alunoRoutes");
+const fotoRoutes = require("./routes/fotoRoutes");
 
 const whiteList = [
   process.env.FRONTEND_URL,
