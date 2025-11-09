@@ -1,7 +1,7 @@
-import Sequelize, { Model } from "sequelize";
-import appConfig from "../config/appConfig";
+const Sequelize = require("sequelize");
+const appConfig = require("../config/appConfig");
 
-export default class Foto extends Model {
+module.exports = class Photo extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       {
@@ -26,13 +26,13 @@ export default class Foto extends Model {
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `${appConfig.url}/images/${this.getDataValue("filename")}`;
+            return `${appConfig.photoUrl}/${this.getDataValue("filename")}`;
           },
         },
       },
       {
         sequelize,
-        tableName: "fotos",
+        tableName: "photos",
       }
     );
     return this;
@@ -41,4 +41,4 @@ export default class Foto extends Model {
   static associate(models) {
     this.belongsTo(models.Aluno, { foreignKey: "aluno_id" });
   }
-}
+};
