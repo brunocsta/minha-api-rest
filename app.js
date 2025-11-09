@@ -1,15 +1,35 @@
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
+const { resolve } = require("path");
 dotenv.config();
 
-import { resolve } from "path";
+require("./src/database");
 
-import "./src/database";
-import express from "express";
-import homeRoutes from "./src/routes/homeRoutes";
-import userRoutes from "./src/routes/userRoutes";
-import tokenRoutes from "./src/routes/tokenRoutes";
-import alunoRoutes from "./src/routes/alunoRoutes";
-import fotoRoutes from "./src/routes/fotoRoutes";
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+
+const homeRoutes = require("./src/routes/homeRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const tokenRoutes = require("./src/routes/tokenRoutes");
+const alunoRoutes = require("./src/routes/alunoRoutes");
+const fotoRoutes = require("./src/routes/fotoRoutes");
+
+const whiteList = [
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+  "http://localhost:3001",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
 
 class App {
   constructor() {
@@ -19,9 +39,23 @@ class App {
   }
 
   middlewares() {
+    this.app.use(cors(corsOptions));
+    this.app.use(helmet());
+
+    // Rate limiting
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutos
+      max: 100, // máximo 100 requests por IP
+      message: "Too many requests from this IP",
+    });
+    this.app.use(limiter);
+
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
-    this.app.use(express.static(resolve(__dirname, "uploads")));
+    this.app.use(
+      "/images/",
+      express.static(resolve(__dirname, "..", "uploads", "images"))
+    );
   }
 
   routes() {
@@ -33,5 +67,4 @@ class App {
   }
 }
 
-//exporta a classe já instanciada, neste caso exporta o express (que é o app)
 export default new App().app;
