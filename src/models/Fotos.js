@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const appConfig = require("../config/appConfig");
 
-module.exports = class Photo extends Sequelize.Model {
+module.exports = class Foto extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       {
@@ -26,13 +26,13 @@ module.exports = class Photo extends Sequelize.Model {
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `${appConfig.photoUrl}/${this.getDataValue("filename")}`;
+            return `${appConfig.url}/images/${this.getDataValue("filename")}`;
           },
         },
       },
       {
         sequelize,
-        tableName: "photos",
+        tableName: "fotos",
       }
     );
     return this;
